@@ -2,21 +2,20 @@ require_relative "validation_errors"
 
 class Calculator
 
-  attr_accessor :equation, :stack, :result, :equation_status, :parenthases_stack
+  attr_accessor :equation, :stack, :result, :equation_status, :parenthases_stack, :current_stack
 
   def initialize equation
     @equation = equation
     @stack = []
+    @current_stack =[]
     @result = 0
     @equation_status = true
     @parenthases_stack =[]
-
-    run_calculator
   end
 
   def run_calculator
     process_stack
-    # evaluate_equation
+    evaluate_equation
     # evaluate_result unless self.stack.empty?
     # print_result
   end
@@ -30,46 +29,50 @@ class Calculator
   end
 
   def evaluate_equation
-    terms = stack
-
-    while terms.length > 0
+    terms = self.stack
+    count = terms.length
+    while count > 0
       term = terms.pop
+      count = count - 1
       case
       when is_numeric?(term) || ['*', '+', '/', '-'].include?(term)
-        stack << term
+        self.current_stack << term
       when term == '('
         if self.parenthases_stack.empty?
           msg = "Parenthesis error"
           raise ValidationErrors.new(msg)
         else
-          parenthases_stack.pop
-          self.evaluate_result
+          self.parenthases_stack.pop
+          evaluate_result
         end
       when term == ')'
-        parenthases_stack << term
-      else
+        self.parenthases_stack << term
       end
     end
   end
 
   def equation_is_valid?
-     self.equation_status
+    parenthasis_matched? && self.stack.empty?
   end
 
   def evaluate_result
-    current_equation = self.stack.map{ |term| term.to_s }.join(' ')
+    current_equation = self.current_stack.map{ |term| term.to_s }.join(' ')
     evaluation = eval(current_equation)
-    if is_numeric?(evaluation) && self.parenthasis_matched?
+    if ( is_numeric?(evaluation) == true ) && ( parenthasis_matched? == true )
       self.result += evaluation
     else
-      if !self.parenthasis_matched?
+      if !parenthasis_matched?
         msg = "The parenthasis do not match on submitted equation"
       else
         msg = "Equation Not Valid: #{current_equation}"
-        raise ValidationErrors.new(msg)
       end
+      raise ValidationErrors.new(msg)
     end
     reset_stack
+  end
+
+  def process_stack
+    self.stack = self.equation.split(" ")
   end
 
   private
@@ -82,9 +85,6 @@ class Calculator
     self.parenthases_stack.empty?
   end
 
-  def process_stack
-    self.stack = self.equation.split(" ")
-  end
 
   def is_numeric? string
     true if Float(string) rescue false
