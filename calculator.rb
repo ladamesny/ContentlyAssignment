@@ -2,87 +2,68 @@ require_relative "validation_errors"
 
 class Calculator
 
-  attr_accessor :equation, :stack, :result, :equation_status, :parenthases_stack, :current_stack
+  attr_accessor :equation, :stack, :result, :equation_status, :closing_parenthases_stack
 
   def initialize equation
     @equation = equation
     @stack = []
-    @current_stack =[]
     @result = 0
     @equation_status = true
-    @parenthases_stack =[]
+    @closing_parenthases_stack =[]
   end
 
   def run_calculator
-    process_stack
-    evaluate_equation
-    # evaluate_result unless self.stack.empty?
-    # print_result
-  end
+    process_equation
 
-  def print_result
-    if equation_is_valid?
-      puts self.result
-    else
-      raise ValidationErrors.new
+    validate_equation
+
+    begin
+      evaluate_result
+    rescue SyntaxError
     end
-  end
-
-  def evaluate_equation
-    terms = self.stack
-    count = terms.length
-    while count > 0
-      term = terms.pop
-      count = count - 1
-      case
-      when is_numeric?(term) || ['*', '+', '/', '-'].include?(term)
-        self.current_stack << term
-      when term == '('
-        if self.parenthases_stack.empty?
-          msg = "Parenthesis error"
-          raise ValidationErrors.new(msg)
-        else
-          self.parenthases_stack.pop
-          evaluate_result
-        end
-      when term == ')'
-        self.parenthases_stack << term
-      end
-    end
-  end
-
-  def equation_is_valid?
-    parenthasis_matched? && self.stack.empty?
   end
 
   def evaluate_result
-    current_equation = self.current_stack.map{ |term| term.to_s }.join(' ')
-    evaluation = eval(current_equation)
-    if ( is_numeric?(evaluation) == true ) && ( parenthasis_matched? == true )
-      self.result += evaluation
-    else
-      if !parenthasis_matched?
-        msg = "The parenthasis do not match on submitted equation"
-      else
-        msg = "Equation Not Valid: #{current_equation}"
-      end
-      raise ValidationErrors.new(msg)
-    end
-    reset_stack
+    self.result = eval(self.equation)
   end
 
-  def process_stack
+  def validate_equation
+    terms = self.stack
+    count = terms.size
+    while count > 0
+      term = terms.pop
+      count = terms.size
+      case
+      when term == '('
+        if self.closing_parenthases_stack.empty?
+          self.equation_status = false
+          count = 0
+        else
+          self.closing_parenthases_stack.pop
+        end
+      when term == ')'
+        self.closing_parenthases_stack << term
+      end
+    end
+  end
+
+
+  def equation_is_valid?
+    parenthasis_matched? && self.stack.empty? && self.equation_status
+  end
+
+  def process_equation
     self.stack = self.equation.split(" ")
+  end
+
+  def answer
+    self.result
   end
 
   private
 
-  def reset_stack
-    self.stack = []
-  end
-
   def parenthasis_matched?
-    self.parenthases_stack.empty?
+    self.closing_parenthases_stack.empty?
   end
 
 
