@@ -134,6 +134,15 @@ class TestCalculator < Test::Unit::TestCase
     calculator_8 = Calculator.new(equation_8)
     calculator_8.run_calculator
 
+    equation_9 = '( ( 25 ) / ( 5 ) )'
+    calculator_9 = Calculator.new(equation_9)
+    calculator_9.run_calculator
+
+    # fails
+    equation_10 = "( ( 5 ) ( 5 * 10 ) )"
+    calculator_10 = Calculator.new(equation_10)
+    calculator_10.run_calculator
+
     assert_equal(calculator_1.answer, 7 )
     assert_equal(calculator_2.answer, 35 )
     assert_equal(calculator_3.answer, 35 )
@@ -142,6 +151,8 @@ class TestCalculator < Test::Unit::TestCase
     assert_equal(calculator_6.answer, 8 )
     assert_equal(calculator_7.answer, -2 )
     assert_equal(calculator_8.answer, 2 )
+    assert_equal(calculator_9.answer, 5 )
+    assert_equal(calculator_10.answer, 250 )
 
   end
 

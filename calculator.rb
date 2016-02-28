@@ -49,7 +49,7 @@ class Calculator
 
 
   def equation_is_valid?
-    parenthasis_matched? && self.stack.empty? && self.equation_status
+    parenthasis_matched? && self.equation_status
   end
 
   def process_equation
