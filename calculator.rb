@@ -53,7 +53,20 @@ class Calculator
   end
 
   def process_equation
-    self.stack = self.equation.split(" ")
+    self.stack = self.equation.split(' ')
+    new_stack = []
+    size = self.stack.size
+    position = 0
+    while position < size
+      item = self.stack[position]
+      new_stack << item
+      if ( is_numeric?(item) && self.stack[position+1] == '(' ) || ( item == ')' && is_numeric?(self.stack[position+1]) ) || ( item == ')' && self.stack[position+1] == '(' )
+        new_stack << '*'
+      end
+      position +=1
+    end
+    self.stack = new_stack
+    self.equation = new_stack.join(' ')
   end
 
   def answer
