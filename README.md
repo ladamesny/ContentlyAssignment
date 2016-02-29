@@ -27,5 +27,5 @@ This program evaluates an equation passed in as a string, respecting the order o
 The code also contains input validation.
 
 To run code:
- - Make test-unit is installed. Enter "gem install test-unit" on the command line to install
- - To run the tests, type this on the command line: "ruby calculator_test_cases.rb"
+ - Make test-unit is installed. Enter **gem install test-unit** on the command line to install
+ - To run the tests, type this on the command line: **ruby calculator_test_cases.rb**
