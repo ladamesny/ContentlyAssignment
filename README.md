@@ -17,12 +17,12 @@ To complete this assignment fork this Gist and provide your completed work. No m
 
 This program evaluates an equation passed in as a string, respecting the order of operations. This program will evaluate strings containing the following operators:
 
-PARENTHASIS: '(' or ')'
-EXPONENTS: '^' or '**'
-MULTIPLICATION: 'x' or '*'
-DIVISION: '÷' or '/'
-ADDITION: '+'
-SUBTRACTION: '−' or '-'
+-PARENTHASIS: '(' or ')'
+-EXPONENTS: '^' or '**'
+-MULTIPLICATION: 'x' or '*'
+-DIVISION: '÷' or '/'
+-ADDITION: '+'
+-SUBTRACTION: '−' or '-'
 
 The code also contains input validation.
 
