@@ -2,10 +2,11 @@ require_relative "validation_errors"
 
 class Calculator
 
-  attr_accessor :equation, :stack, :result, :equation_status, :closing_parenthases_stack
+  attr_accessor :equation, :stack, :result, :equation_status, :closing_parenthases_stack, :original_equation, :final_equation
 
   def initialize equation
-    @equation = equation
+    @original_equation = equation
+    @final_equation = ''
     @stack = []
     @result = 0
     @equation_status = true
@@ -24,7 +25,7 @@ class Calculator
   end
 
   def evaluate_result
-    self.result = eval(self.equation)
+    self.result = eval(self.final_equation)
   end
 
   def validate_equation
@@ -53,20 +54,37 @@ class Calculator
   end
 
   def process_equation
-    self.stack = self.equation.split(' ')
+    self.stack = self.original_equation.delete(' ').split('')
     new_stack = []
     size = self.stack.size
     position = 0
     while position < size
       item = self.stack[position]
       new_stack << item
-      if ( is_numeric?(item) && self.stack[position+1] == '(' ) || ( item == ')' && is_numeric?(self.stack[position+1]) ) || ( item == ')' && self.stack[position+1] == '(' )
+      case
+      when closed_parenthasis?(item, self.stack[position+1])
+        new_stack.pop
+        position+=1
+        return
+      when implicit_multiplication?(item, self.stack[position+1]) || item == 'x'
         new_stack << '*'
+      when item == '^'
+        new_stack << '**'
+      when item == '÷'
+        new_stack << '/'
       end
       position +=1
     end
     self.stack = new_stack
-    self.equation = new_stack.join(' ')
+    self.final_equation = new_stack.join('')
+  end
+
+  def implicit_multiplication? current_term, next_term
+    (is_numeric?(current_term) && next_term == '(' ) || ( current_term == ')' && is_numeric?(next_term) ) || ( current_term == ')' && next_term == '(' )
+  end
+
+  def closed_parenthasis? current_term, next_term
+    (current_term == '(' && next_term == ')')
   end
 
   def answer
