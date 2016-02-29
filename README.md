@@ -15,7 +15,7 @@ To complete this assignment fork this Gist and provide your completed work. No m
 
 ###SUBMISSION###
 
-This program evaluates an equation passed in as a string, respecting the order of operations. This program will evaluate strings containing the following operators:
+This program evaluates an equation passed in as a string, respecting the order of operations. This program will evaluate strings containing the following operators and symbols:
 
 - PARENTHASIS: '(' or ')'
 - EXPONENTS: '^' or '**'
@@ -24,8 +24,8 @@ This program evaluates an equation passed in as a string, respecting the order o
 - ADDITION: '+'
 - SUBTRACTION: '−' or '-'
 
-The code also contains input validation.
+The code also contains input validations.
 
 To run code:
- - Make test-unit is installed. Enter **gem install test-unit** on the command line to install
+ - Make sure test-unit is installed. Enter **gem install test-unit** on the command line to install
  - To run the tests, type this on the command line: **ruby calculator_test_cases.rb**
