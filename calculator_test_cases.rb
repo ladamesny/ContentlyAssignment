@@ -42,6 +42,55 @@ class TestCalculator < Test::Unit::TestCase
     assert_equal(calculator.equation_is_valid?, true)
   end
 
+  def test_multiplication_operators
+    equation_star = " 5 * 2 "
+    calculator_star = Calculator.new(equation_star)
+    calculator_star.run_calculator
+    assert_equal(10, calculator_star.answer )
+
+    equation_x = " 5 x 3 "
+    calculator_x = Calculator.new(equation_x)
+    calculator_x.run_calculator
+    assert_equal(15, calculator_x.answer )
+  end
+
+  def test_division_operators
+    equation_star = " 10 / 2 "
+    calculator_star = Calculator.new(equation_star)
+    calculator_star.run_calculator
+    assert_equal(5, calculator_star.answer )
+
+    equation_x = " 15 ÷ 5 "
+    calculator_x = Calculator.new(equation_x)
+    calculator_x.run_calculator
+    assert_equal(3, calculator_x.answer )
+  end
+
+  def test_subtraction_operators
+    equation_star = " 10 - 2 "
+    calculator_star = Calculator.new(equation_star)
+    calculator_star.run_calculator
+    assert_equal(8, calculator_star.answer )
+
+    # Slightly different 'subtract' operator I found while I was looking for equation examples.
+    equation_x = " 15 − 5 "
+    calculator_x = Calculator.new(equation_x)
+    calculator_x.run_calculator
+    assert_equal(10, calculator_x.answer )
+  end
+
+  def test_exponent_operators
+    equation_star = " 5 ** 2 "
+    calculator_star = Calculator.new(equation_star)
+    calculator_star.run_calculator
+    assert_equal(25, calculator_star.answer )
+
+    # Slightly different 'subtract' operator I found while I was looking for equation examples.
+    equation_x = " 3^2 "
+    calculator_x = Calculator.new(equation_x)
+    calculator_x.run_calculator
+    assert_equal(9, calculator_x.answer )
+  end
 
   def test_validity_of_equations
 
