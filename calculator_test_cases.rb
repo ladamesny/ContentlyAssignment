@@ -196,7 +196,7 @@ class TestCalculator < Test::Unit::TestCase
     calculator_15.run_calculator
     assert_equal(calculator_15.answer, 49 )
 
-    equation_16 = "( 32 − 3^3 ÷ 9 x 10 )^5  − 4^2 ÷ 8 + 3^2"
+    equation_16 = "( 32 − 3^3 ÷ 9 x 10 )^5 − 4^2 ÷ 8 + 3^2"
     calculator_16 = Calculator.new(equation_16)
     calculator_16.run_calculator
     assert_equal(calculator_16.answer, 39 )

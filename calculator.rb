@@ -66,12 +66,20 @@ class Calculator
         new_stack.pop
         position+=1
         return
-      when implicit_multiplication?(item, self.stack[position+1]) || item == 'x'
+      when implicit_multiplication?(item, self.stack[position+1])
         new_stack << '*'
       when item == '^'
+        new_stack.pop
         new_stack << '**'
       when item == '÷'
+        new_stack.pop
         new_stack << '/'
+      when item == 'x'
+        new_stack.pop
+        new_stack << '*'
+      when item == '−'
+        new_stack.pop
+        new_stack << '-'
       end
       position +=1
     end
